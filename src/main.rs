@@ -1,10 +1,3 @@
-// Copyright 2016-2018 Mateusz Sieczko and other GilRs Developers
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 extern crate env_logger;
 extern crate gilrs;
 extern crate ta;
@@ -19,9 +12,6 @@ use std::process;
 use std::thread;
 use std::time::{Duration, Instant};
 
-//use std::time::{Duration, SystemTime};
-//use ta::indicators::ExponentialMovingAverage;
-
 use ta::indicators::SimpleMovingAverage;
 use ta::Next;
 
@@ -33,10 +23,6 @@ use log::{Record, LevelFilter};
 use env_logger::Builder;
 use chrono::Local;
 use std::io::Write;
-
-
-
-
 
 struct Monitors {
     last: bool,
@@ -85,6 +71,7 @@ impl Monitors {
 		
 		info!("Turning monitor: {}", self.want);
 		
+		
 		let (conn, _) = xcb::Connection::connect(None)
 			.expect("Failed to connect");
 		
@@ -125,11 +112,11 @@ fn main() {
 				record.level(),
 				record.args()))
 				
-           .filter(None, LevelFilter::Debug);
+           .filter(None, LevelFilter::Warn);
 		   
 		   
-    if env::var("RUST_LOG").is_ok() {
-       builder.parse(&env::var("RUST_LOG").unwrap());
+    if env::var("LOG").is_ok() {
+       builder.parse(&env::var("LOG").unwrap());
     }
 	builder.init();
 
@@ -142,12 +129,12 @@ fn main() {
 	let mut gilrs = match GilrsBuilder::new().set_update_state(false).build() {
 		Ok(g) => g,
 		Err(gilrs::Error::NotImplemented(g)) => {
-			eprintln!("Current platform is not supported");
+			eprintln!("platform not supported");
 
 			g
 		}
 		Err(e) => {
-			eprintln!("Failed to create gilrs context: {}", e);
+			eprintln!("gilrs: {}", e);
 			process::exit(-1);
 		}
 	};
