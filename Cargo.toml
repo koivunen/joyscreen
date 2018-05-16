@@ -1,0 +1,17 @@
+[package]
+
+name = "joyscreen"
+version = "0.1.0"
+authors = [ "Koivunen <koivunen@users.noreply.github.com>" ]
+
+[dependencies]
+
+gilrs = "0.6.0"
+log = "0.4.0"
+env_logger = "0.5.9"
+ta = "0.1.0"
+chrono = "0.4"
+
+[dependencies.xcb]
+version = "0.8.2"
+features = ["dpms"]
